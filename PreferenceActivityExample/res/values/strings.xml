@@ -1,0 +1,109 @@
+<resources>
+
+    <string name="app_name">PreferenceActivityExample</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Preference Activity Example</string>
+
+    <!-- Buttons -->
+    <string name="start">Start</string>
+
+    <!-- All of the keyxxx values MUST be lowercase for Android 2.2 -->
+
+    <!-- Settings:  TTS Category -->
+    <string name="keyTTSCategory">ttscategory</string>
+    <string name="titleTTSCategory">Text-To-Speech (TTS) Options</string>
+    <string name="summaryTTSCategory">Setup to use TTS</string>
+
+    <!-- Settings:  TTS Category: Use TTS -->
+    <string name="keyUseTTS">usetts</string>
+    <string name="titleUseTTS">Use TTS Service</string>
+    <string name="summaryTTSNotAvailable">The TTS service is NOT available</string>
+    <string name="summaryOnUseTTS">USE TTS</string>
+    <string name="summaryOffUseTTS">Do NOT use TTS</string>
+    <string name="defaultValueUseTTS">true</string>
+
+    <!-- Settings:  TTS Category: Walk prompt -->
+    <string name="keyWalkPrompt">walkprompt</string>
+    <string name="titleWalkPrompt">Transition to walking</string>
+    <string name="summaryWalkPrompt">Enter what you want the phone to say when you are to begin walking</string>
+    <string name="defaultValueWalkPrompt">Walk, walk, walk</string>
+
+    <!-- Settings:  TTS Category: Run prompt -->
+    <string name="keyRunPrompt">runprompt</string>
+    <string name="titleRunPrompt">Transition to running</string>
+    <string name="summaryRunPrompt">Enter what you want the phone to say when you are to begin running</string>
+    <string name="defaultValueRunPrompt">Run, run, run</string>
+
+    <!-- Settings:  TTS Category: Cool down prompt -->
+    <string name="keyCoolDownPrompt">cooldownprompt</string>
+    <string name="titleCoolDownPrompt">Transition to cool down</string>
+    <string name="summaryCoolDownPrompt">Enter what you want the phone to say when you are to begin cooling down</string>
+    <string name="defaultValueCoolDownPrompt">Cool down, cool down, cool down</string>
+
+    <!-- Settings:  TTS Category: Stop prompt -->
+    <string name="keyStopPrompt">stopprompt</string>
+    <string name="titleStopPrompt">Transition to stop the workout</string>
+    <string name="summaryStopPrompt">Enter what you want the phone to say when you are to stop the workout</string>
+    <string name="defaultValueStopPrompt">Workout complete, workout complete, workout complete</string>
+
+    <!-- Settings: Announce Interval Category -->
+    <string name="keyAnnounceIntervalCategory">announceinterval</string>
+    <string name="titleAnnounceIntervalCategory">Announce Intervals</string>
+    <string name="summaryAnnounceIntervalCategory">Enter the options you want</string>
+
+    <!-- Settings:  Announce Interval Category: Use Announce Interval -->
+    <string name="keyUseAnnounceInterval">useannounceinterval</string>
+    <string name="titleUseAnnounceInterval">Each Interval</string>
+    <string name="summaryOnUseAnnounceInterval">Report each completed interval</string>
+    <string name="summaryOffUseAnnounceInterval">Do NOT report each completed interval</string>
+    <string name="defaultValueUseAnnounceInterval">true</string>
+
+    <!-- Settings:  Announce Interval Category: Each Interval -->
+    <string name="keyEachInterval">eachinterval</string>
+    <string name="titleEachInterval">Completed interval prompt</string>
+    <string name="summaryEachInterval">For each completed interval say</string>
+    <string name="defaultValueEachInterval">completed interval</string>
+
+    <!-- Settings:  Announce Interval Category: Use Total Interval -->
+    <string name="keyUseTotalInterval">usetotalinterval</string>
+    <string name="titleUseTotalInterval">Total Interval</string>
+    <string name="summaryOnUseTotalInterval">Report interval goal</string>
+    <string name="summaryOffUseTotalInterval">Do NOT report interval goal</string>
+    <string name="defaultValueUseTotalInterval">true</string>
+
+    <!-- Settings:  Announce Interval Category: Total Interval -->
+    <string name="keyTotalInterval">totalinterval</string>
+    <string name="titleTotalInterval">Interval goal prompt</string>
+    <string name="summaryTotalInterval">For each completed interval also say</string>
+    <string name="defaultValueTotalInterval">of</string>
+
+    <!-- Settings: Vibrator Category -->
+    <string name="keyVibratorCategory">vibratorcategory</string>
+    <string name="titleVibratorCategory">Vibrator Options</string>
+    <string name="summaryVibratorCategory">Enter the vibrator options you want</string>
+
+    <!-- Settings:  Vibrator Category: Use Vibrator -->
+    <string name="keyUseVibrator">usevibrator</string>
+    <string name="titleUseVibrator">Use Vibrator</string>
+    <string name="summaryOnUseVibrator">Vibrate phone</string>
+    <string name="summaryOffUseVibrator">Do NOT vibrate phone</string>
+    <string name="defaultValueUseVibrator">true</string>
+
+    <!-- Settings:  Vibrator Category: Vibrator duration -->
+    <string name="keyVibratorDuration">vibratorduration</string>
+    <string name="titleVibratorDuration">Duration in seconds</string>
+    <string name="summaryVibratorDuration">Enter how many seconds you want the phone to vibrate</string>
+    <string name="defaultValueVibratorDuration">5</string>
+
+    <!-- Settings:  Additional activities -->
+    <string name="keyAdditionalCategory">additionalcategory</string>
+    <string name="titleAdditionalCategory">Additional Options</string>
+    <string name="summaryAdditionalCategory">Additional Menu Options</string>
+
+    <!-- Settings:  Reset ALL settings to the defaults -->
+    <string name="keyResetSettings">resetsettings</string>
+    <string name="titleResetSettings">Type ALL to reset everything</string>
+    <string name="summaryResetSettings">Reset ALL settings to their default, …</string>
+    <string name="defaultValueResetSettings"></string>
+
+</resources>

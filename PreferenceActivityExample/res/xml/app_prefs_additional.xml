@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:defaultValue="@string/defaultValueResetSettings"
+        android:key="@string/keyResetSettings"
+        android:summary="@string/summaryResetSettings"
+        android:title="@string/titleResetSettings" />
+
+</PreferenceScreen>

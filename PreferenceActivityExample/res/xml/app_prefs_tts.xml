@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:defaultValue="@string/defaultValueUseTTS"
+        android:key="@string/keyUseTTS"
+        android:summaryOff="@string/summaryOffUseTTS"
+        android:summaryOn="@string/summaryOnUseTTS"
+        android:title="@string/titleUseTTS" />
+
+    <EditTextPreference
+        android:defaultValue="@string/defaultValueWalkPrompt"
+        android:dependency="@string/keyUseTTS"
+        android:key="@string/keyWalkPrompt"
+        android:summary="@string/summaryWalkPrompt"
+        android:title="@string/titleWalkPrompt" />
+    <EditTextPreference
+        android:defaultValue="@string/defaultValueRunPrompt"
+        android:dependency="@string/keyUseTTS"
+        android:key="@string/keyRunPrompt"
+        android:summary="@string/summaryRunPrompt"
+        android:title="@string/titleRunPrompt" />
+    <EditTextPreference
+        android:defaultValue="@string/defaultValueCoolDownPrompt"
+        android:dependency="@string/keyUseTTS"
+        android:key="@string/keyCoolDownPrompt"
+        android:summary="@string/summaryCoolDownPrompt"
+        android:title="@string/titleCoolDownPrompt" />
+    <EditTextPreference
+        android:defaultValue="@string/defaultValueStopPrompt"
+        android:dependency="@string/keyUseTTS"
+        android:key="@string/keyStopPrompt"
+        android:summary="@string/summaryStopPrompt"
+        android:title="@string/titleStopPrompt" />
+
+</PreferenceScreen>

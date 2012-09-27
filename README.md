@@ -1,0 +1,1 @@
+I use PreferenceActivityExample as a test bed for Android Preferences.

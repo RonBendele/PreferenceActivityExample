@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <header
+        android:fragment="net.bendele.preferenceactivityexample.PrefsActivity$PrefsFragment"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:summary="@string/summaryTTSCategory"
+        android:title="@string/titleTTSCategory" >
+        <extra
+            android:name="pref-resource"
+            android:value="app_prefs_tts" />
+    </header>
+    <header
+        android:fragment="net.bendele.preferenceactivityexample.PrefsActivity$PrefsFragment"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:summary="@string/summaryAnnounceIntervalCategory"
+        android:title="@string/titleAnnounceIntervalCategory" >
+        <extra
+            android:name="pref-resource"
+            android:value="app_prefs_intervals" />
+    </header>
+    <header
+        android:fragment="net.bendele.preferenceactivityexample.PrefsActivity$PrefsFragment"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:summary="@string/summaryVibratorCategory"
+        android:title="@string/titleVibratorCategory" >
+        <extra
+            android:name="pref-resource"
+            android:value="app_prefs_vibrator" />
+    </header>
+    <header
+        android:fragment="net.bendele.preferenceactivityexample.PrefsActivity$PrefsFragment"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:summary="@string/summaryAdditionalCategory"
+        android:title="@string/titleAdditionalCategory" >
+        <extra
+            android:name="pref-resource"
+            android:value="app_prefs_additional" />
+    </header>
+
+</preference-headers>

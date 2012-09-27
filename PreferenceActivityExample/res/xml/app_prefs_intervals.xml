@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:defaultValue="@string/defaultValueUseAnnounceInterval"
+        android:key="@string/keyUseAnnounceInterval"
+        android:summaryOff="@string/summaryOffUseAnnounceInterval"
+        android:summaryOn="@string/summaryOnUseAnnounceInterval"
+        android:title="@string/titleUseAnnounceInterval" />
+
+    <EditTextPreference
+        android:defaultValue="@string/defaultValueEachInterval"
+        android:dependency="@string/keyUseAnnounceInterval"
+        android:key="@string/keyEachInterval"
+        android:summary="@string/summaryEachInterval"
+        android:title="@string/titleEachInterval" />
+
+    <CheckBoxPreference
+        android:defaultValue="@string/defaultValueUseTotalInterval"
+        android:dependency="@string/keyUseAnnounceInterval"
+        android:key="@string/keyUseTotalInterval"
+        android:summaryOff="@string/summaryOffUseTotalInterval"
+        android:summaryOn="@string/summaryOnUseTotalInterval"
+        android:title="@string/titleUseTotalInterval" />
+
+    <EditTextPreference
+        android:defaultValue="@string/defaultValueTotalInterval"
+        android:dependency="@string/keyUseTotalInterval"
+        android:key="@string/keyTotalInterval"
+        android:summary="@string/summaryTotalInterval"
+        android:title="@string/titleTotalInterval" />
+
+</PreferenceScreen>
