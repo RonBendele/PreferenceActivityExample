@@ -105,5 +105,6 @@
     <string name="titleResetSettings">Type ALL to reset everything</string>
     <string name="summaryResetSettings">Reset ALL settings to their default, …</string>
     <string name="defaultValueResetSettings"></string>
+    <string name="togglettsavailable">TTS Available</string>
 
 </resources>

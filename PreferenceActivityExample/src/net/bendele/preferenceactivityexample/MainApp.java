@@ -4,8 +4,8 @@ import android.app.Application;
 
 public class MainApp extends Application {
 
-    private static boolean mTtsAvailable = false;
-    private static boolean mUseTTS = false;
+    private static boolean mTtsAvailable = true;
+    private static boolean mUseTTS = true;
 
     protected static boolean getTtsAvailable (){
         return mTtsAvailable;

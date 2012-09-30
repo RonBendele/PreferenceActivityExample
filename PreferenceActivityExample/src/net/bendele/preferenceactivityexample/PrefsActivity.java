@@ -5,8 +5,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -16,9 +18,9 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
-import android.util.AttributeSet;
 
-public class PrefsActivity extends PreferenceActivity {
+public class PrefsActivity extends PreferenceActivity implements
+        OnSharedPreferenceChangeListener {
     protected Method mLoadHeaders = null;
     protected Method mHasHeaders = null;
 
@@ -66,7 +68,8 @@ public class PrefsActivity extends PreferenceActivity {
             CheckBoxPreference useTtsPreference = (CheckBoxPreference) findPreference(getString(R.string.keyUseTTS));
             setTtsSummary(useTtsPreference);
             CheckBoxPreference useIntervalPreference = (CheckBoxPreference) findPreference(getString(R.string.keyUseAnnounceInterval));
-            setIntervalSummary(useTtsPreference, useIntervalPreference);
+            useIntervalPreference.setDependency(getString(R.string.keyUseTTS));
+            setIntervalsSummary(useIntervalPreference);
             // Initialize the summaries for each preference
             for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
                 initSummary(getPreferenceScreen().getPreference(i));
@@ -85,15 +88,31 @@ public class PrefsActivity extends PreferenceActivity {
         }
     }
 
-    private static void setIntervalSummary(CheckBoxPreference useTTS,
-            CheckBoxPreference useAnnounceInterval) {
-        if (MainApp.getTtsAvailable() && useTTS.isChecked()) {
-            useAnnounceInterval.setEnabled(true);
+    /*
+     * If TTS is available on the device and the user previously selected to use
+     * TTS, allow them to set the Announce Intervals Options. If they are not
+     * available/selected then prevent the user from setting the Announce
+     * Intervals Options and let them know why via the summary.
+     */
+    private static void setIntervalsSummary(CheckBoxPreference preference) {
+        preference.setEnabled(MainApp.getTtsAvailable() && MainApp.getUseTTS());
+        if (MainApp.getTtsAvailable() && MainApp.getUseTTS()) {
+            preference.setSummaryOff(R.string.summaryOffUseAnnounceInterval);
+            preference.setSummaryOn(R.string.summaryOnUseAnnounceInterval);
+        } else if (!MainApp.getTtsAvailable()) {
+            preference.setSummaryOff(R.string.summaryTTSNotAvailable);
+            preference.setSummaryOn(R.string.summaryTTSNotAvailable);
         } else {
-            useAnnounceInterval.setEnabled(false);
+            preference.setSummaryOff(R.string.summaryOffUseTTS);
+            preference.setSummaryOn(R.string.summaryOffUseTTS);
         }
     }
 
+    /*
+     * If TTS is available on the device, allow the user to choose what they
+     * want to set in the Text-To-Speech Options. If TTS is not available
+     * disable all the options & let the user know through the summary.
+     */
     private static void setTtsSummary(CheckBoxPreference preference) {
         preference.setEnabled(MainApp.getTtsAvailable());
         if (preference.isEnabled()) {
@@ -131,9 +150,43 @@ public class PrefsActivity extends PreferenceActivity {
         }
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+            String key) {
+        // any changes here must be duplicated in the Fragment as well.
+        if (key.equals(getString(R.string.keyUseTTS))) {
+            MainApp.setUseTTS(sharedPreferences.getBoolean(key, true));
+        }
+    }
+
+    @TargetApi(11)
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Unregister the listener for whenever a key changes
+        if (Build.VERSION.SDK_INT < 11) {
+            getPreferenceScreen().getSharedPreferences()
+                    .unregisterOnSharedPreferenceChangeListener(this);
+        }
+    }
+
+    @TargetApi(11)
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Set up a listener for whenever a key changes
+        if (Build.VERSION.SDK_INT < 11) {
+            getPreferenceScreen().getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
+        }
+    }
+
     // v11 & greater stuff goes here
     @SuppressLint("NewApi")
-    static public class PrefsFragment extends PreferenceFragment {
+    static public class PrefsFragment extends PreferenceFragment implements
+            OnSharedPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedState) {
             super.onCreate(savedState);
@@ -145,6 +198,9 @@ public class PrefsActivity extends PreferenceActivity {
             if (thePrefRes == R.xml.app_prefs_tts) {
                 CheckBoxPreference useTtsPreference = (CheckBoxPreference) findPreference(getString(R.string.keyUseTTS));
                 setTtsSummary(useTtsPreference);
+            } else if (thePrefRes == R.xml.app_prefs_intervals) {
+                CheckBoxPreference useIntervalPreference = (CheckBoxPreference) findPreference(getString(R.string.keyUseAnnounceInterval));
+                setIntervalsSummary(useIntervalPreference);
             }
             // Initialize the summaries for each preference
             for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
@@ -153,11 +209,34 @@ public class PrefsActivity extends PreferenceActivity {
         }
 
         @Override
-        public void onInflate(Activity activity, AttributeSet attrs,
-                Bundle savedInstanceState) {
-            // TODO Auto-generated method stub
-            super.onInflate(activity, attrs, savedInstanceState);
+        public void onSharedPreferenceChanged(
+                SharedPreferences sharedPreferences, String key) {
+            // any changes here must be duplicated in the Activity as well.
+            if (key.equals(getString(R.string.keyUseTTS))) {
+                MainApp.setUseTTS(sharedPreferences.getBoolean(key, true));
+            }
         }
 
-    }
-}
+        /*
+         * Activity.onPause/onResume and Fragment.onPause/onResume are chained
+         * together for v11 & greater.
+         */
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            // Unregister the listener for whenever a key changes
+            getPreferenceScreen().getSharedPreferences()
+                    .unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            // Set up a listener for whenever a key changes
+            getPreferenceScreen().getSharedPreferences()
+                    .registerOnSharedPreferenceChangeListener(this);
+        }
+    } // PrefsFragment
+
+} // PrefsActivity

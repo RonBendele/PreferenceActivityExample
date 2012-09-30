@@ -5,13 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
+
+    private ToggleButton tb;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tb = (ToggleButton) findViewById(R.id.toggle_Button_TTS_available);
+        tb.setChecked(MainApp.getTtsAvailable());
     }
 
     @Override
@@ -20,7 +26,11 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    public void onClick(View view){
+    public void onStartClick(View view) {
         startActivity(new Intent(this, PrefsActivity.class));
+    }
+
+    public void onTtsAvailableToggle(View view) {
+        MainApp.setTtsAvailable(tb.isChecked());
     }
 }
