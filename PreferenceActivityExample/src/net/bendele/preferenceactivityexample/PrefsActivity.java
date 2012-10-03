@@ -18,11 +18,32 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class PrefsActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
+
+    // Logging constants
+    private static final boolean DEBUG = false;
+    private static final String BENDELE = "BENDELE";
+    private static final String CLASS = "PrefsActivity - ";
+
     protected Method mLoadHeaders = null;
     protected Method mHasHeaders = null;
+
+    private static String resetSettingsKey;
+
+    private static void myLog(String msg) {
+        if (DEBUG) {
+            if (msg != "") {
+                msg = " - " + msg;
+            }
+            String caller = Thread.currentThread().getStackTrace()[3]
+                    .getMethodName();
+            Log.d(BENDELE, CLASS + caller + msg);
+        }
+    }
 
     /**
      * Checks to see if using new v11+ way of handling PrefsFragments.
@@ -45,7 +66,13 @@ public class PrefsActivity extends PreferenceActivity implements
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle aSavedState) {
+
+        myLog("");
+
+        resetSettingsKey = getString(R.string.keyResetSettings);
+
         if (Build.VERSION.SDK_INT >= 11) {
+            myLog(">= v11");
             // onBuildHeaders() will be called during super.onCreate()
             try {
                 mLoadHeaders = getClass().getMethod("loadHeadersFromResource",
@@ -55,8 +82,8 @@ public class PrefsActivity extends PreferenceActivity implements
             }
         }
         super.onCreate(aSavedState);
-        // pre-v11 stuff goes here
         if (!isNewV11Prefs()) {
+            myLog("< v11");
             addPreferencesFromResource(R.xml.app_prefs_tts_category);
             addPreferencesFromResource(R.xml.app_prefs_tts);
             addPreferencesFromResource(R.xml.app_prefs_intervals_category);
@@ -150,13 +177,28 @@ public class PrefsActivity extends PreferenceActivity implements
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
             String key) {
+        myLog("< v11");
         // any changes here must be duplicated in the Fragment as well.
         if (key.equals(getString(R.string.keyUseTTS))) {
             MainApp.setUseTTS(sharedPreferences.getBoolean(key, true));
         }
+        if (resetSettingsKey.equals(key.trim())) {
+            if (sharedPreferences.getString(key, "").equalsIgnoreCase("ALL")) {
+                sharedPreferences.edit().clear().commit();
+                PreferenceManager.setDefaultValues(this, R.xml.app_prefs_tts,
+                        true);
+                PreferenceManager.setDefaultValues(this,
+                        R.xml.app_prefs_intervals, true);
+                PreferenceManager.setDefaultValues(this,
+                        R.xml.app_prefs_vibrator, true);
+                finish();
+            }
+        }
+        updatePrefSummary(findPreference(key));
     }
 
     @TargetApi(11)
@@ -166,9 +208,12 @@ public class PrefsActivity extends PreferenceActivity implements
         super.onPause();
         // Unregister the listener for whenever a key changes
         if (Build.VERSION.SDK_INT < 11) {
+            myLog("< v11");
             getPreferenceScreen().getSharedPreferences()
                     .unregisterOnSharedPreferenceChangeListener(this);
         }
+        // else the PrefsFragment listener is unregistered in PrefsFragment
+        // below when the Build.VERSION.SDK_INT >= 11
     }
 
     @TargetApi(11)
@@ -176,11 +221,14 @@ public class PrefsActivity extends PreferenceActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        // Set up a listener for whenever a key changes
+        // Register a listener for whenever a key changes
         if (Build.VERSION.SDK_INT < 11) {
+            myLog("< v11");
             getPreferenceScreen().getSharedPreferences()
                     .registerOnSharedPreferenceChangeListener(this);
         }
+        // else the PrefsFragment listener is registered in PrefsFragment below
+        // when the Build.VERSION.SDK_INT >= 11
     }
 
     // v11 & greater stuff goes here
@@ -211,10 +259,26 @@ public class PrefsActivity extends PreferenceActivity implements
         @Override
         public void onSharedPreferenceChanged(
                 SharedPreferences sharedPreferences, String key) {
+            myLog(">= v11");
             // any changes here must be duplicated in the Activity as well.
             if (key.equals(getString(R.string.keyUseTTS))) {
                 MainApp.setUseTTS(sharedPreferences.getBoolean(key, true));
             }
+            if (resetSettingsKey.equals(key.trim())) {
+                if (sharedPreferences.getString(key, "")
+                        .equalsIgnoreCase("ALL")) {
+                    Context context = getActivity().getApplicationContext();
+                    sharedPreferences.edit().clear().commit();
+                    PreferenceManager.setDefaultValues(context,
+                            R.xml.app_prefs_tts, true);
+                    PreferenceManager.setDefaultValues(context,
+                            R.xml.app_prefs_intervals, true);
+                    PreferenceManager.setDefaultValues(context,
+                            R.xml.app_prefs_vibrator, true);
+                    getActivity().finish();
+                }
+            }
+            updatePrefSummary(findPreference(key));
         }
 
         /*
@@ -226,6 +290,7 @@ public class PrefsActivity extends PreferenceActivity implements
         public void onPause() {
             super.onPause();
             // Unregister the listener for whenever a key changes
+            myLog(">= v11");
             getPreferenceScreen().getSharedPreferences()
                     .unregisterOnSharedPreferenceChangeListener(this);
         }
@@ -233,7 +298,8 @@ public class PrefsActivity extends PreferenceActivity implements
         @Override
         public void onResume() {
             super.onResume();
-            // Set up a listener for whenever a key changes
+            // Register a listener for whenever a key changes
+            myLog(">= v11");
             getPreferenceScreen().getSharedPreferences()
                     .registerOnSharedPreferenceChangeListener(this);
         }

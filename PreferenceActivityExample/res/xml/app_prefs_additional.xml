@@ -5,6 +5,8 @@
         android:defaultValue="@string/defaultValueResetSettings"
         android:key="@string/keyResetSettings"
         android:summary="@string/summaryResetSettings"
-        android:title="@string/titleResetSettings" />
+        android:title="@string/titleResetSettings"
+        android:inputType="textCapCharacters"
+        android:hint="Capital letters only!" />
 
 </PreferenceScreen>
